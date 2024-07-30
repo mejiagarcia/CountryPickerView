@@ -18,13 +18,21 @@ public struct Country: Equatable {
     public let name: String
     public let code: String
     public let phoneCode: String
+
     public func localizedName(_ locale: Locale = Locale.current) -> String? {
         return locale.localizedString(forRegionCode: code)
     }
-    public var flag: UIImage {
-        // Cocoapods || SPM
-        return UIImage(named: "Images/\(code.uppercased())", in: Bundle._module, compatibleWith: nil) ??
-            UIImage.init(named: code.uppercased(), in: Bundle._module, compatibleWith: nil)!
+
+    public var flag: UIImage? {
+      // Cocoapods || SPM
+      return UIImage(named: "Images/\(code.uppercased())", in: Bundle._module, compatibleWith: nil) ??
+      UIImage.init(named: code.uppercased(), in: Bundle._module, compatibleWith: nil)
+    }
+
+    public init(name: String, code: String, phoneCode: String) {
+      self.name = name
+      self.code = code
+      self.phoneCode = phoneCode
     }
 }
 
@@ -46,7 +54,15 @@ public class CountryPickerView: NibView {
         }
     }
     @IBOutlet public weak var countryDetailsLabel: UILabel!
-    
+
+    public var defaultCountry: Country {
+      !usableCountries.isEmpty ? usableCountries[0] : .init(
+        name: "Spain",
+        code: "ES",
+        phoneCode:  "+34"
+      )
+    }
+
     /// Show/Hide the country code on the view.
     public var showCountryCodeInView = true {
         didSet {
