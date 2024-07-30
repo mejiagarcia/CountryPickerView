@@ -29,7 +29,9 @@ public class CountryPickerViewController: UITableViewController {
     }
     
     fileprivate var dataSource: CountryPickerViewDataSourceInternal!
-    
+
+    public var countrySelectedBlock: ((Country) -> Void)?
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         
@@ -197,6 +199,7 @@ extension CountryPickerViewController {
         
         let completion = {
             self.countryPickerView.selectedCountry = country
+            self.countrySelectedBlock?(country)
         }
         // If this is root, dismiss, else pop
         if navigationController?.viewControllers.count == 1 {

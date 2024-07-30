@@ -153,9 +153,14 @@ public class CountryPickerView: NibView {
         }
     }
     
-    public func showCountriesList(from viewController: UIViewController) {
+  public func showCountriesList(
+    from viewController: UIViewController,
+    countrySelectedBlock: ((Country) -> Void)? = nil
+  ) {
         let countryVc = CountryPickerViewController(style: .grouped)
         countryVc.countryPickerView = self
+        countryVc.countrySelectedBlock = countrySelectedBlock
+    
         if let viewController = viewController as? UINavigationController {
             delegate?.countryPickerView(self, willShow: countryVc)
             viewController.pushViewController(countryVc, animated: true) {
